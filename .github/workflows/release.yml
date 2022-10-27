@@ -27,7 +27,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-      - run: bash LEVEL=${{ github.event.inputs.level }} scripts/update_plugin.sh
+      - run: LEVEL=${{ github.event.inputs.level }} bash scripts/update_plugin.sh
           # git tag -a 1.0.1 -m 1.0.1
           # git push --tag
 
