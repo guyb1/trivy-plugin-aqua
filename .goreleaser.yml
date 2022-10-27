@@ -4,6 +4,7 @@ before:
     - go mod download
 builds:
   - main: ./cmd/aqua
+    dir: .
     binary: aqua
     env:
       - CGO_ENABLED=0
