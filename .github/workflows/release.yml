@@ -2,6 +2,15 @@ name: trivy-plugin-aqua release
 
 on:
   workflow_dispatch:
+    inputs:
+      level:
+        type: choice
+        required: true
+        description: Level
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
   build:
@@ -18,8 +27,9 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          git tag -a 1.0.1 -m 1.0.1
-          git push --tag
+      - run: bash scripts/update_plugin.sh ${{ github.event.inputs.level }}
+          # git tag -a 1.0.1 -m 1.0.1
+          # git push --tag
 
       - uses: actions/checkout@v3
         with:
