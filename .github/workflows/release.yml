@@ -26,6 +26,7 @@ jobs:
           args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO }}
+          GORELEASER_CURRENT_TAG: v1.0.0
 
       # - name: Update plugin Links
       #   run: |
