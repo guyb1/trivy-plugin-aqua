@@ -23,6 +23,7 @@ jobs:
           repository: guyb1/public-plugin-repo
           ref: 'main'
           token:  ${{ secrets.PUBLIC_REPO }}
+          fetch-depth: 0
       - name: setup git config
         run: |
           git config user.name "GitHub Actions Bot"
