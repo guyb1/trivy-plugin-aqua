@@ -27,30 +27,30 @@ jobs:
           version: latest
           args: release --rm-dist
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO }}
 
-      - name: Update plugin Links
-        run: |
-          sed  -e "s/PLACEHOLDERVERSION/${{github.ref_name}}/g" .github/plugin_template.yaml > plugin.yaml
+      # - name: Update plugin Links
+      #   run: |
+      #     sed  -e "s/PLACEHOLDERVERSION/${{github.ref_name}}/g" .github/plugin_template.yaml > plugin.yaml
 
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: ${{ secrets.PR_CREATION_TOKEN }}
-          branch: "update-plugin-links-${{github.ref_name}}"
-          title: "Update Plugin Artifacts Links for ${{github.ref_name}}"
-          delete-branch: true
-          base: master
-          add-paths: |
-            plugin.yaml
-      - name: Send Slack message (Workflow)
-        id: slack
-        uses: slackapi/slack-github-action@v1.21.0
-        with:
-          payload: |
-            {
-              "link": "${{ steps.cpr.outputs.pull-request-url }}"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.CODE_TEAM_SLACK_WEBHOOK }}
+      # - name: Create Pull Request
+      #   id: cpr
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     token: ${{ secrets.PR_CREATION_TOKEN }}
+      #     branch: "update-plugin-links-${{github.ref_name}}"
+      #     title: "Update Plugin Artifacts Links for ${{github.ref_name}}"
+      #     delete-branch: true
+      #     base: master
+      #     add-paths: |
+      #       plugin.yaml
+      # - name: Send Slack message (Workflow)
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.21.0
+      #   with:
+      #     payload: |
+      #       {
+      #         "link": "${{ steps.cpr.outputs.pull-request-url }}"
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.CODE_TEAM_SLACK_WEBHOOK }}

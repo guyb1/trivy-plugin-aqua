@@ -27,5 +27,5 @@ archives:
 release:
   prerelease: auto
   github:
-    owner: aquasecurity
-    name: trivy-plugin-aqua
+    owner: guyb1
+    name: public-plugin-repo
