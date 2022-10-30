@@ -1,4 +1,4 @@
-name: trivy-plugin-aqua release v2
+name: update-plugin
 
 on:
   workflow_dispatch:
@@ -21,4 +21,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
       - run: LEVEL=${{ github.event.inputs.level }} bash scripts/update_plugin.sh
