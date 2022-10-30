@@ -15,6 +15,7 @@ builds:
     #   - arm64
 
 changelog:
+  skip: true
   sort: asc
   filters:
     exclude:

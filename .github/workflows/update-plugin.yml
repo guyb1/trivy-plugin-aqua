@@ -1,0 +1,24 @@
+name: trivy-plugin-aqua release v2
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        type: choice
+        required: true
+        description: Level
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  build:
+    name: releasing trivy-plugin-aqua
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: LEVEL=${{ github.event.inputs.level }} bash scripts/update_plugin.sh

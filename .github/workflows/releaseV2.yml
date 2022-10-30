@@ -1,0 +1,76 @@
+name: trivy-plugin-aqua release v2
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    name: releasing trivy-plugin-aqua
+    runs-on: ubuntu-latest
+    env:
+      RELEASES_REPO: "guyb1/public-plugin-repo"
+      RELEASE_DIRECTORY: "/tmp/releases/prod"
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v3
+        with:
+          stable: "false"
+          go-version: "1.18"
+      - run: go version
+
+      - name: Release
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          version: latest
+          args: release --rm-dist --skip-publish
+          workdir: ${{ env.WORKING_DIRECTORY }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare release
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          mkdir -p ${{ env.RELEASE_DIRECTORY }}
+          cp dist/checksums.txt ${{ env.RELEASE_DIRECTORY }}
+          cp dist/*.tar.gz ${{ env.RELEASE_DIRECTORY }}
+
+      - name: Create release in releases repo
+        uses: softprops/action-gh-release@50195ba7f6f93d1ac97ba8332a178e008ad176aa
+        with:
+          repository: ${{ env.RELEASES_REPO }}
+          token: ${{ secrets.PUBLIC_REPO }}
+          files: ${{ env.RELEASE_DIRECTORY }}/*
+          tag_name: ${{ github.ref_name }}
+          body: "Hola"
+
+      # - name: Update plugin Links
+      #   run: |
+      #     sed  -e "s/PLACEHOLDERVERSION/${{github.ref_name}}/g" .github/plugin_template.yaml > plugin.yaml
+
+      # - name: Create Pull Request
+      #   id: cpr
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     token: ${{ secrets.PR_CREATION_TOKEN }}
+      #     branch: "update-plugin-links-${{github.ref_name}}"
+      #     title: "Update Plugin Artifacts Links for ${{github.ref_name}}"
+      #     delete-branch: true
+      #     base: master
+      #     add-paths: |
+      #       plugin.yaml
+      # - name: Send Slack message (Workflow)
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.21.0
+      #   with:
+      #     payload: |
+      #       {
+      #         "link": "${{ steps.cpr.outputs.pull-request-url }}"
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.CODE_TEAM_SLACK_WEBHOOK }}

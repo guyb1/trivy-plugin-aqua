@@ -56,9 +56,9 @@ function incr_semver() {
 
 validate_input
 
-git checkout master
-git fetch --tags --all
-git pull
+# git checkout master
+# git fetch --tags --all
+# git pull
 
 LATEST_TAG=$(git describe --tags --abbrev=0)
 TAG=$(incr_semver ${LATEST_TAG} ${LEVEL})
