@@ -1,6 +1,7 @@
 name: trivy-plugin-aqua release v2
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "*"
