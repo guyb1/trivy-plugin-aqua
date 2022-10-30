@@ -37,7 +37,6 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |
           mkdir -p ${{ env.RELEASE_DIRECTORY }}
-          cp dist/checksums.txt ${{ env.RELEASE_DIRECTORY }}
           cp dist/*.tar.gz ${{ env.RELEASE_DIRECTORY }}
 
       - name: Create release in releases repo
